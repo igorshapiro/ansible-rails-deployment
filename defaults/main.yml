@@ -1,3 +1,5 @@
+rails_dir: "{{ rails_build_path }}"
+
 # migrate database by default
 migrate: yes
 
@@ -14,25 +16,25 @@ force_asset_compilation: no
 migrate_diff_paths:
   -
     current: "{{ current_path }}/db/schema.rb"
-    next: "{{ build_path }}/db/schema.rb"
+    next: "{{ rails_build_path }}/db/schema.rb"
   -
     current: "{{ current_path }}/db/structure.sql"
-    next: "{{ build_path }}/db/structure.sql"
+    next: "{{ rails_build_path }}/db/structure.sql"
   -
     current: "{{ current_path }}/db/migrate"
-    next: "{{ build_path }}/db/migrate"
+    next: "{{ rails_build_path }}/db/migrate"
 
 # paths to check by defualt for changes when compiling assets
 asset_precompile_diff_paths:
   -
     current: "{{ current_path }}/app/assets"
-    next: "{{ build_path }}/app/assets"
+    next: "{{ rails_build_path }}/app/assets"
   -
     current: "{{ current_path }}/vendor/assets"
-    next: "{{ build_path }}/vendor/assets"
+    next: "{{ rails_build_path }}/vendor/assets"
   -
     current: "{{ current_path }}/Gemfile.lock"
-    next: "{{ build_path }}/Gemfile.lock"
+    next: "{{ rails_build_path }}/Gemfile.lock"
 
 # assumptions about the ruby setup.
 gem_home: "{{ home_directory }}/.gem"

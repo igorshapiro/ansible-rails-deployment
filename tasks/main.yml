@@ -23,7 +23,7 @@
     state: present
 
 - name: execute bundler
-  command: chdir="{{ build_path }}" bundle install --path='{{ shared_bundle_path }}' {{ bundle_install_options|default(default_bundle_install_options) }}
+  command: chdir="{{ rails_build_path }}" bundle install --path='{{ shared_bundle_path }}' {{ bundle_install_options|default(default_bundle_install_options) }}
   register: bundler
   changed_when: "'Installing' in bundler or 'Updating' in bundler or 'upgrade' in bundler"
   environment: command_environment
@@ -37,7 +37,7 @@
 - debug: var=rails_schema
 
 - name: migrate the database
-  command: chdir="{{ build_path }}" bundle exec rake db:migrate
+  command: chdir="{{ rails_build_path }}" bundle exec rake db:migrate
   environment: command_environment
   when: migrate and (force_migrate or rails_schema|changed)
 
@@ -48,10 +48,10 @@
   register: assets
 
 - name: precompile asset files if necessary
-  command: chdir="{{ build_path }}" bundle exec rake assets:precompile
+  command: chdir="{{ rails_build_path }}" bundle exec rake assets:precompile
   environment: command_environment
   when: compile_assets and (assets|changed or force_asset_compilation)
 
 - name: copy asset files when not changed
-  shell: "cp -R {{ current_path }}/public/assets {{ build_path }}/public/assets"
+  shell: "cp -R {{ current_path }}/public/assets {{ rails_build_path }}/public/assets"
   when: compile_assets and assets is defined and not assets.changed
